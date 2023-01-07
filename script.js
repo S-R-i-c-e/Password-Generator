@@ -90,10 +90,10 @@ var upperCasedCharacters = [
 
 /* assign the character set arrays to an object for reference */
 characters = {
-  "special Characters" : specialCharacters,
-  "numeric Characters" : numericCharacters,
-  "lower Cased Characters" : lowerCasedCharacters,
-  "upper Cased Characters" : upperCasedCharacters
+  "special Characters": specialCharacters,
+  "numeric Characters": numericCharacters,
+  "lower Cased Characters": lowerCasedCharacters,
+  "upper Cased Characters": upperCasedCharacters
 }
 
 /* validateLength: given input NaN or a number, returns a boolean
@@ -101,9 +101,9 @@ characters = {
 function validateLength(unvalidatedLength) {
   const minimunLength = 10;
   const maximumLength = 64;
-  return (Number.isInteger(unvalidatedLength) 
-        && unvalidatedLength>=minimunLength
-        && unvalidatedLength<=maximumLength);
+  return (Number.isInteger(unvalidatedLength)
+    && unvalidatedLength >= minimunLength
+    && unvalidatedLength <= maximumLength);
 }
 
 /* getPasswordLengh: using the window prompt, returns the input integer
@@ -117,30 +117,41 @@ function getPasswordLength() {
   }
 }
 
-/* setOption: returns boolean according to user response to window.confirm */
+/* setOption: returns boolean according to user response to window.confirm concerning
+  character set options wanted */
 function setOption(optionName) {
-  return window.confirm("use "+optionName+"?");
+  return window.confirm("use " + optionName + "?");
 }
 
+function validateOptions(unvalidatedOptions) {
+
+}
 /* getPasswordOptions: creates and sets the options object to record user input according to
   character sets wanted. If the user options are valid, returns those options, else
   returns undefined */
 function getPasswordOptions() {
-  const options = {"special Characters" : false,
-                    "numeric Characters" : false,
-                    "lower Cased Characters" : false,
-                    "upper Cased Characters" : false};
+
+  const options = {
+    "special Characters": false,
+    "numeric Characters": false,
+    "lower Cased Characters": false,
+    "upper Cased Characters": false,
+    optionsValid: function() {     // at least one option must be true for choices to be valid
+      return (this["special Characters"]
+       || this["numeric Characters"]
+       || this["lower Cased Characters"]
+       || this["upper Cased Characters"]);
+    }
+  };
+
   for (choice in options) {
     options[choice] = setOption(choice);
   }
-
-  return options;
-
-  // if (validateOptions(options)) {
-  //   return options;
-  // } else {
-  //   window.alert("choose at least one type of character please");
-  // }
+  if (options.optionsValid) {
+    return options;
+  } else {
+    window.alert("choose at least one type of character please");
+  }
 }
 
 
@@ -167,7 +178,7 @@ function generatePassword() {
   let characterSetChoices = getPasswordOptions();
   let characterSet = createCharacterSet(characterSetChoices);
   return [passwordLength, characterSet];
-  }
+}
 
 
 // Get references to the #generate element
