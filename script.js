@@ -88,14 +88,8 @@ var upperCasedCharacters = [
   'Z'
 ];
 
-function windowPrompt(msg) {
-  return window.prompt(msg);
-}
-
-function errorAlert() {
-  window.alert("enter a number between 10 and 64 please");
-}
-
+/* validateLength: given input NaN or a number, returns a boolean
+  indicating if the input is an integer that meets tthe stated range */
 function validateLength(unvalidatedLength) {
   const minimunLength = 10;
   const maximumLength = 64;
@@ -104,18 +98,40 @@ function validateLength(unvalidatedLength) {
         && unvalidatedLength<=maximumLength);
 }
 
+/* getPasswordLengh: using the window prompt, returns the input integer
+  if it meets the validation conditions, else alerts the user and returns undefined */
 function getPasswordLength() {
-  inputLength = Number(window.prompt("length"));
+  let inputLength = Number(window.prompt("length"));
   if (validateLength(inputLength)) {
     return inputLength;
   } else {
-    errorAlert();
+    window.alert("enter a number between 10 and 64 please");
   }
 }
 
-// Function to prompt user for password options
-function getPasswordOptions() {
+function setOption(optionName) {
+  return window.confirm("use "+optionName+"?");
+}
 
+/* getPasswordOptions: sets the options object to record the user input for
+  character sets wanted. If the user options are valid, returns those options, else
+  returns undefined */
+function getPasswordOptions() {
+  const options = {"special characters" : false,
+                    "numeric characters" : false,
+                    "lower cased characters" : false,
+                    "upper cased characters" : false};
+  for (choice in options) {
+    options[choice] = setOption(choice);
+  }
+
+  return options;
+
+  // if (validateOptions(options)) {
+  //   return options;
+  // } else {
+  //   window.alert("choose at least one type of character please");
+  // }
 }
 
 // Function for getting a random element from an array
@@ -126,7 +142,9 @@ function getRandom(arr) {
 // Function to generate password with user input
 function generatePassword() {
   let passwordLength = getPasswordLength();
-  return passwordLength;
+  let characterOptions = getPasswordOptions();
+  let characterSet = createCharacterSet(characterOptions);
+  return [passwordLength, characterOptions];
   }
 
 
