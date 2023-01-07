@@ -88,6 +88,14 @@ var upperCasedCharacters = [
   'Z'
 ];
 
+/* assign the character set arrays to an object for reference */
+characters = {
+  "special Characters" : specialCharacters,
+  "numeric Characters" : numericCharacters,
+  "lower Cased Characters" : lowerCasedCharacters,
+  "upper Cased Characters" : upperCasedCharacters
+}
+
 /* validateLength: given input NaN or a number, returns a boolean
   indicating if the input is an integer that meets tthe stated range */
 function validateLength(unvalidatedLength) {
@@ -109,18 +117,19 @@ function getPasswordLength() {
   }
 }
 
+/* setOption: returns boolean according to user response to window.confirm */
 function setOption(optionName) {
   return window.confirm("use "+optionName+"?");
 }
 
-/* getPasswordOptions: sets the options object to record the user input for
+/* getPasswordOptions: creates and sets the options object to record user input according to
   character sets wanted. If the user options are valid, returns those options, else
   returns undefined */
 function getPasswordOptions() {
-  const options = {"special characters" : false,
-                    "numeric characters" : false,
-                    "lower cased characters" : false,
-                    "upper cased characters" : false};
+  const options = {"special Characters" : false,
+                    "numeric Characters" : false,
+                    "lower Cased Characters" : false,
+                    "upper Cased Characters" : false};
   for (choice in options) {
     options[choice] = setOption(choice);
   }
@@ -134,17 +143,30 @@ function getPasswordOptions() {
   // }
 }
 
+
 // Function for getting a random element from an array
 function getRandom(arr) {
 
 }
 
+function createCharacterSet(setChoices) {
+  console.log(setChoices);
+  let characterSet = [];
+  for (choice in setChoices) {
+    if (setChoices[choice]) {
+      characterSet = characterSet.concat(characters[choice]);
+    }
+  }
+  console.log(characterSet);
+  return characterSet;
+}
+
 // Function to generate password with user input
 function generatePassword() {
   let passwordLength = getPasswordLength();
-  let characterOptions = getPasswordOptions();
-  let characterSet = createCharacterSet(characterOptions);
-  return [passwordLength, characterOptions];
+  let characterSetChoices = getPasswordOptions();
+  let characterSet = createCharacterSet(characterSetChoices);
+  return [passwordLength, characterSet];
   }
 
 
