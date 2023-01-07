@@ -86,11 +86,11 @@ const upperCasedCharacters = [
 ];
 /* assign the character set arrays to an object for reference */
 const characters = {
-  "special Characters": specialCharacters,
-  "numeric Characters": numericCharacters,
-  "lower Cased Characters": lowerCasedCharacters,
-  "upper Cased Characters": upperCasedCharacters
-}
+  special_characters: specialCharacters,
+  numeric_characters: numericCharacters,
+  lower_case_characters: lowerCasedCharacters,
+  upper_case_characters: upperCasedCharacters
+};
 /* validatePasswordLength: given input NaN or a number, returns a boolean
   indicating if the input is an integer that meets the stated range */
 function validatePasswordLength(unvalidatedLength) {
@@ -103,7 +103,7 @@ function validatePasswordLength(unvalidatedLength) {
 /* getPasswordLength: using window.prompt, returns the input integer
   if it meets the validation conditions, otherwise alerts the user and returns undefined */
 function getPasswordLength() {
-  let inputLength = Number(window.prompt("length"));
+  let inputLength = Number(window.prompt("enter the password length (10-164 characters)"));
   if (validatePasswordLength(inputLength)) { 
     return inputLength;
   } else {
@@ -115,32 +115,31 @@ function getPasswordLength() {
 function setOption(optionName) {
   return window.confirm("use " + optionName + "?");
 }
-/* validateOptions: logic returns true if at least one character set is chosen, otherwise
-  returns false
-  [TODO] this logic would sit better as a method of options but i could not make that work */
-function validateOptions(unvalidatedOptions) {
-  return unvalidatedOptions["special Characters"]
-    || unvalidatedOptions["numeric Characters"]
-    || unvalidatedOptions["lower Cased Characters"]
-    || unvalidatedOptions["upper Cased Characters"]
-}
 /* getPasswordOptions: creates and sets the options object to record user input according to
   character sets wanted. If the user options are valid, returns those options, else
   returns undefined */
 function getPasswordOptions() {
 
   const options = {                  // create object to hold user character set choices
-    "special Characters": false,
-    "numeric Characters": false,
-    "lower Cased Characters": false,
-    "upper Cased Characters": false,
+    special_characters: false,
+    numeric_characters: false,
+    lower_case_characters: false,
+    upper_case_characters: false,
+    optionsValidation: function() {
+      return this.special_characters
+      || this.numeric_characters
+      || this.upper_case_characters
+      || this.lower_case_characters
+    }
   };
 
-  for (choice in options) {               // enumerate the character sets
-    options[choice] = setOption(choice);  // and set the choices true or false
+  for (choice in options) {
+    if (!(typeof(options[choice])==="function")) { // enumerate the character sets but not the method
+      options[choice] = setOption(choice);  // and set the choices true or false
+    }
   }
 
-  if (validateOptions(options)) {         // return options if at least one is true
+  if (options.optionsValidation()) {         // return options if at least one is true
     return options;
   } else {
     window.alert("choose at least one type of character please"); // otherwise alert and undefined
@@ -148,7 +147,7 @@ function getPasswordOptions() {
 }
 // Function for getting a random element from an array
 function getRandom(arr) {
-  return arr[Math.round(Math.random() * (arr.length - 1))];
+  return arr[Math.floor(Math.random()*arr.length)];
 }
 /* createPasswordCharacterSet: given the options object, returns an array of
   characters that includes each character array chosen by the user */
