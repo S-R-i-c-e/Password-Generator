@@ -1,5 +1,5 @@
 // Array of special characters to be included in password
-var specialCharacters = [
+const specialCharacters = [
   '@',
   '%',
   '+',
@@ -26,10 +26,10 @@ var specialCharacters = [
 ];
 
 // Array of numeric characters to be included in password
-var numericCharacters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const numericCharacters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 // Array of lowercase characters to be included in password
-var lowerCasedCharacters = [
+const lowerCasedCharacters = [
   'a',
   'b',
   'c',
@@ -59,7 +59,7 @@ var lowerCasedCharacters = [
 ];
 
 // Array of uppercase characters to be included in password
-var upperCasedCharacters = [
+const upperCasedCharacters = [
   'A',
   'B',
   'C',
@@ -89,7 +89,7 @@ var upperCasedCharacters = [
 ];
 
 /* assign the character set arrays to an object for reference */
-characters = {
+const characters = {
   "special Characters": specialCharacters,
   "numeric Characters": numericCharacters,
   "lower Cased Characters": lowerCasedCharacters,
@@ -97,7 +97,7 @@ characters = {
 }
 
 /* validateLength: given input NaN or a number, returns a boolean
-  indicating if the input is an integer that meets tthe stated range */
+  indicating if the input is an integer that meets the stated range */
 function validateLength(unvalidatedLength) {
   const minimunLength = 10;
   const maximumLength = 64;
@@ -106,8 +106,8 @@ function validateLength(unvalidatedLength) {
     && unvalidatedLength <= maximumLength);
 }
 
-/* getPasswordLengh: using the window prompt, returns the input integer
-  if it meets the validation conditions, else alerts the user and returns undefined */
+/* getPasswordLength: using window.prompt, returns the input integer
+  if it meets the validation conditions, otherwise alerts the user and returns undefined */
 function getPasswordLength() {
   let inputLength = Number(window.prompt("length"));
   if (validateLength(inputLength)) {
@@ -117,40 +117,41 @@ function getPasswordLength() {
   }
 }
 
-/* setOption: returns boolean according to user response to window.confirm concerning
-  character set options wanted */
+/* setOption: returns boolean according to user response to window.confirm for a given
+  character set name */
 function setOption(optionName) {
   return window.confirm("use " + optionName + "?");
 }
 
+/* validateOptions: logic returns true if at least one character set is chosen, otherwise
+  returns false
+  [TODO] this would sit better as a method of options but i could not make that work */
 function validateOptions(unvalidatedOptions) {
-
+  return unvalidatedOptions["special Characters"]
+    || unvalidatedOptions["numeric Characters"]
+    || unvalidatedOptions["lower Cased Characters"]
+    || unvalidatedOptions["upper Cased Characters"]
 }
 /* getPasswordOptions: creates and sets the options object to record user input according to
   character sets wanted. If the user options are valid, returns those options, else
   returns undefined */
 function getPasswordOptions() {
 
-  const options = {
+  const options = {                  // create object to hold user character set choices
     "special Characters": false,
     "numeric Characters": false,
     "lower Cased Characters": false,
     "upper Cased Characters": false,
-    optionsValid: function() {     // at least one option must be true for choices to be valid
-      return (this["special Characters"]
-       || this["numeric Characters"]
-       || this["lower Cased Characters"]
-       || this["upper Cased Characters"]);
-    }
   };
 
-  for (choice in options) {
-    options[choice] = setOption(choice);
+  for (choice in options) {               // enumerate the character sets
+    options[choice] = setOption(choice);  // and set the choices true or false
   }
-  if (options.optionsValid) {
+
+  if (validateOptions(options)) {         // return options if at least one is true
     return options;
   } else {
-    window.alert("choose at least one type of character please");
+    window.alert("choose at least one type of character please"); // otherwise alert and undefined
   }
 }
 
@@ -160,24 +161,30 @@ function getRandom(arr) {
 
 }
 
+/* createPasswordCharacterSet: given the options object, returns an array of
+  characters that includes each character array chosen by the user */
 function createCharacterSet(setChoices) {
-  console.log(setChoices);
-  let characterSet = [];
+  let characterSet = [];                                       // initialize return data
   for (choice in setChoices) {
     if (setChoices[choice]) {
       characterSet = characterSet.concat(characters[choice]);
     }
   }
-  console.log(characterSet);
   return characterSet;
 }
 
-// Function to generate password with user input
+/* generatePassword: get password length, then character set options,
+  but dropping out if either length or options are invalid; if valid
+  create and return the password */
 function generatePassword() {
   let passwordLength = getPasswordLength();
-  let characterSetChoices = getPasswordOptions();
-  let characterSet = createCharacterSet(characterSetChoices);
-  return [passwordLength, characterSet];
+  if (passwordLength) {
+    let characterSetChoices = getPasswordOptions();
+    if (characterSetChoices) {
+      let characterSet = createCharacterSet(characterSetChoices);
+      return [passwordLength, characterSet];
+    }
+  }
 }
 
 
