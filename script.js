@@ -88,6 +88,31 @@ var upperCasedCharacters = [
   'Z'
 ];
 
+function windowPrompt(msg) {
+  return window.prompt(msg);
+}
+
+function errorAlert() {
+  window.alert("enter a number between 10 and 64 please");
+}
+
+function validateLength(unvalidatedLength) {
+  const minimunLength = 10;
+  const maximumLength = 64;
+  return (Number.isInteger(unvalidatedLength) 
+        && unvalidatedLength>=minimunLength
+        && unvalidatedLength<=maximumLength);
+}
+
+function getPasswordLength() {
+  inputLength = Number(window.prompt("length"));
+  if (validateLength(inputLength)) {
+    return inputLength;
+  } else {
+    errorAlert();
+  }
+}
+
 // Function to prompt user for password options
 function getPasswordOptions() {
 
@@ -100,8 +125,10 @@ function getRandom(arr) {
 
 // Function to generate password with user input
 function generatePassword() {
+  let passwordLength = getPasswordLength();
+  return passwordLength;
+  }
 
-}
 
 // Get references to the #generate element
 var generateBtn = document.querySelector('#generate');
