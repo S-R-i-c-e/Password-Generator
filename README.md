@@ -19,7 +19,7 @@ javascript code, html rendering, CSS styling.
 requires a web-browser - open index.html file.
 
 ## Screenshot
-[![screenshot](./assets/Password-Generator screenshot.png "screenshot")
+![screenshot](./assets/Password-Generator.png "screenshot")
 
 ## Written by
 Stephen Rice 07/01/2022
