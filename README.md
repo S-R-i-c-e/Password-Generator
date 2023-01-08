@@ -12,7 +12,7 @@ If the choices are valid, a password is produced of the chosen length and compri
 ## Deployment
 
 ### [repo](https://github.com/S-R-i-c-e/Password-Generator)
-### [webpage](https://https://s-r-i-c-e.github.io/Password-Generator/)
+### [webpage](https://s-r-i-c-e.github.io/Password-Generator/)
 javascript code, html rendering, CSS styling. 
 
 ## Installation
